@@ -4,3 +4,11 @@
 *{
      font-family: "Outfit", sans-serif;
 }
+
+button{
+     @apply cursor-pointer
+}
+
+.no-scrollbar::-webkit-scrollbar{
+     display: none;
+}

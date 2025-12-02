@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 
 const Hero = () => {
   const [input, setInput] = useState("");
+  const navigate = useNavigate()
+
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    navigate(`/marketplace? search = ${input}`)
+    
   };
   return (
     <>
@@ -68,10 +73,10 @@ const Hero = () => {
 
         {/* Headline */}
         <h1 className="text-4xl md:text-6xl font-semibold max-w-lg md:max-w-2xl text-center mt-4 leading-tight md:leading-tight">
-          Build stunning{" "}
+          Buy & Sell your{" "}
           <span className="relative bg-gradient-to-r from-purple-700 to-[#764de1] bg-clip-text text-transparent">
-            websites
-            <div className="z-10 absolute bottom-0 left-0 w-full scale-120">
+            Social
+            <div className="z-10 absolute bottom-0 left-0 w-full scale-160">
               <img
                 src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/hero/gradient_arc.svg"
                 alt="gradient"
@@ -79,14 +84,13 @@ const Hero = () => {
             </div>
           </span>{" "}
           <span className="relative bg-gradient-to-r from-[#764de1] to-indigo-600 bg-clip-text text-transparent">
-            with
+            Profiles
           </span>{" "}
-          PrebuiltUI.
+          Online
         </h1>
 
         <p className="max-w-xl text-center text-base my-7">
-          A secure pre-built ui component library for React & HTML with
-          TailwindCSS. Build stunning websites with PrebuiltUI.
+           A secure marketplace to buy and sell Instagram, YouTube, Telegarm and more - fast,safe and hassle-free.
         </p>
 
         {/* Search Box */}
@@ -99,7 +103,7 @@ const Hero = () => {
               onChange={(e) => setInput(e.target.value)}
               value={input}
               type="text"
-              placeholder="type here"
+              placeholder="e.g Instagram account"
               className="pl-2 flex-1 outline-none"
             />
             <button className="bg-indigo-600 text-white p-3 px-6 rounded-md cursor-pointer">

@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './logo.png';
 import { Youtube, Instagram, Music2, Facebook, Twitter, Linkedin, Pin, Camera, Gamepad2, MessageCircle } from 'lucide-react';
 import image_1 from './image_1.jpg';
 import image_2 from './image_2.jpg';
