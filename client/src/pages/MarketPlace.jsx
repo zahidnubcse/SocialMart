@@ -1,11 +1,13 @@
 import { ArrowLeft, Filter, Verified } from 'lucide-react';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ListingCard from '../components/ListingCard';
 import FilterSidebar from '../components/FilterSidebar';
 
 const MarketPlace = () => {
+    const [searchParams] = useSearchParams()
+    const search = searchParams.get("search")
     const navigate = useNavigate();
     const [showFilterPhone,setShowFilterPhone] = useState(false);
       const {listings} = useSelector(state=>state.listing)
@@ -15,10 +17,48 @@ const MarketPlace = () => {
         minFollowers: 0,
         niche: null,
         Verified: false,
-        monitized: false,
+        monetized: false,
       })
 
       const filteredListings = listings.filter((listing)=>{
+
+         if (filters.platform && filters.platform.length>0) {
+          if (!filters.platform.includes(listing.platform)) 
+            return false
+          }
+
+        if (filters.maxPrice) {
+          if (listing.price > filters.maxPrice) 
+            return false
+          }
+
+           if (filters.minFollowers) {
+          if (listing.followers_count < filters.minFollowers) 
+            return false
+          }
+
+          if (filters.niche && filters.niche.length>0) {
+          if (!filters.niche.includes(listing.niche)) 
+            return false
+        }
+          if (filters.Verified && listing.Verified !== filters.Verified) 
+            return false
+
+          if (filters.monetized && listing.monetized !== filters.monetized) 
+            return false
+            
+          if(search){
+            const trimed = search.trim();
+            if(
+              !listing.title.toLowerCase().includes(trimed.toLowerCase()) &&
+              !listing.username.toLowerCase().includes(trimed.toLowerCase()) &&
+              !listing.description.toLowerCase().includes(trimed.toLowerCase()) &&
+              !listing.platform.toLowerCase().includes(trimed.toLowerCase()) &&
+              !listing.niche.toLowerCase().includes(trimed.toLowerCase())
+            )
+            return false
+          }
+          
         return true
       })
     return (
