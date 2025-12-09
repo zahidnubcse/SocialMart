@@ -9,7 +9,7 @@ import Messages from './pages/Messages';
 import MyListings from './pages/MyListings';
 import MyOrders from './pages/MyOrders';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+//import Footer from './components/Footer';
 
 const App = () => {
   const {pathname} = useLocation();
@@ -30,7 +30,7 @@ const App = () => {
         <Route path='/my-listings'  element={<MyListings/>}/>
         <Route path='/my-orders'  element={<MyOrders/>}/>
       </Routes>
-       {!pathname.includes('/admin') && <Footer/>}
+       
     </div>
   );
 };
