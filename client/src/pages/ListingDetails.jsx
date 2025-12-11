@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getProfileLink, platformIcons } from '../assets/assets';
 import { useSelector } from 'react-redux';
-import { ArrowLeft, ArrowUpRightFromSquare, CheckCircle2, ChevronLeftIcon, ChevronRightIcon, DollarSign, Loader2Icon } from 'lucide-react';
+import { ArrowLeft, ArrowUpRightFromSquare, Calendar, CheckCircle2, ChevronLeftIcon, ChevronRightIcon, DollarSign, EyeIcon, LineChart, Loader2Icon, Users } from 'lucide-react';
 
 const ListingDetails = () => {
     const navigate = useNavigate();
@@ -108,7 +108,7 @@ const ListingDetails = () => {
                                  </div>
 
                                  {/*Navigation button */}
-                                 <button onClick={prevSlide} className='absolute left-3 top-1/2 translate-y-1/2
+                                 <button onClick={prevSlide} className='absolute left-3 top-1/2 -translate-y-1/2
                                  bg-white/70 hover:bg-white p-2 rounded-full shadow'>
                                     <ChevronLeftIcon className='w-5 h-5 text-gray-700'/>
                                  </button>
@@ -117,9 +117,59 @@ const ListingDetails = () => {
                                  bg-white/70 hover:bg-white p-2 rounded-full shadow'>
                                     <ChevronRightIcon className='w-5 h-5 text-gray-700'/>
                                  </button>
+                                 {/*Dot Indicators */}
+
+                                 <div className='absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2'>
+                                     {images.map((_, index)=>(
+                                        <button onClick={()=>settCurrent(index)} key={index} className={`w-2.5 h-2.5 rounded-full 
+                                            ${current === index ? "bg-indigo-600" : "bg-gray-300"}`}/>
+                                     ))}
+                                 </div>
                         </div>
                     </div>
                    )}
+
+                   {/* Account matrics */}
+
+
+                   <div className='bg-white rounded-xl border border-gray-200 mt-5'>
+                        <div className='p-4 border-b border-gray-100'>
+                            <h4 className='font-semibold text-gray-800'>Account Matrics</h4>
+                        </div>
+                        <div className='grid grid-cols-2 md:grid-cols-4 gap-4 p-4 text-center'>
+                              <div>
+                                <Users className='mx-auto text-gray-400 w-5 h-5 mb-1'/>
+                                     <p className='font-semibold text-gray-800'>
+                                        {listing.followers_count?.toLocaleString()}
+                                     </p>
+                                     <p className='text-xs text-gray-500'>Followers</p>
+                              </div>
+                                <div>
+                                <LineChart className='mx-auto text-gray-400 w-5 h-5 mb-1'/>
+                                     <p className='font-semibold text-gray-800'>
+                                        {listing.engagement_rate}%
+                                     </p>
+                                     <p className='text-xs text-gray-500'>Engagement</p>
+                              </div>
+                               <div>
+                                <EyeIcon className='mx-auto text-gray-400 w-5 h-5 mb-1'/>
+                                     <p className='font-semibold text-gray-800'>
+                                        {listing.monthly_views?.toLocaleString()}
+                                     </p>
+                                     <p className='text-xs text-gray-500'>Monthly Views</p>
+                              </div>
+                               <div>
+                                <Calendar className='mx-auto text-gray-400 w-5 h-5 mb-1'/>
+                                     <p className='font-semibold text-gray-800'>
+                                        {new Date(listing.createdAt).toLocaleDateString()}
+                                     </p>
+                                     <p className='text-xs text-gray-500'>Listed</p>
+                              </div>
+                        </div>
+                   </div>
+
+                   {/*Description*/}
+
                 </div>
 
                  {/*seller Info and details */}
