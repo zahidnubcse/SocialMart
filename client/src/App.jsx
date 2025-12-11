@@ -9,6 +9,7 @@ import Messages from './pages/Messages';
 import MyListings from './pages/MyListings';
 import MyOrders from './pages/MyOrders';
 import Navbar from './components/Navbar';
+import ChatBox from './components/ChatBox';
 //import Footer from './components/Footer';
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/my-listings'  element={<MyListings/>}/>
         <Route path='/my-orders'  element={<MyOrders/>}/>
       </Routes>
+      <ChatBox/>
        
     </div>
   );

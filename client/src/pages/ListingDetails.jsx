@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getProfileLink, platformIcons } from '../assets/assets';
-import { useSelector } from 'react-redux';
-import { ArrowLeft, ArrowUpRightFromSquare, Calendar, CheckCircle2, ChevronLeftIcon, ChevronRightIcon, DollarSign, EyeIcon, LineChart, Loader2Icon, Users } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ArrowLeft, ArrowUpRightFromSquare, Calendar, CheckCircle2, ChevronLeftIcon, ChevronRightIcon, DollarSign, EyeIcon, LineChart, Loader2Icon, MapPin, MessageSquareIcon, ShoppingBag, Users } from 'lucide-react';
+import { setChat } from '../app/features/chatSlice';
 
 const ListingDetails = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const currency = import.meta.env.VITE_CURRENCY || '$';
 
@@ -25,6 +27,14 @@ const ListingDetails = () => {
     const nextSlide = ()=> settCurrent((prev)=> (
         prev === images.length - 1 ? 0 : prev + 1
     ))
+
+    const purchaseAccount = async ()=>{
+
+    }
+
+    const loadChatbox =()=>{
+        dispatch(setChat({listing: listing}))
+    }
 
     useEffect(()=>{
        const listing = listings.find((listing)=>listing.id === listingId);
@@ -169,14 +179,93 @@ const ListingDetails = () => {
                    </div>
 
                    {/*Description*/}
+                   
+                   <div className='bg-white rounded-xl border border-gray-200 mt-5'>
+                        <div className='p-4 border-b border-gray-100'>
+                            <h4 className='font-semibold text-gray-800'>Description</h4>
+                        </div>
+                        <div className='p-4 text-sm text-gray-600'>
+                            {listing.description}
+                        </div>
+                   </div>
+
+                   {/* additional details */}
+
+                     <div className='bg-white rounded-xl border border-gray-200 mt-5 mb-4'>
+                        <div className='p-4 border-b border-gray-100'>
+                            <h4 className='font-semibold text-gray-800'>Additional Details</h4>
+                        </div>
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 p-4 text-sm'>
+                            <div>
+                                <p className='text-gray-500'>Niche</p>
+                                <p className='font-medium capitalize'>{listing.niche}</p>
+                            </div>
+                            <div>
+                                <p className='text-gray-500'>Primary Country</p>
+                                <p className='font-medium flex items-center'><MapPin className='size-4 mr-1 text-gray-400'/>{listing.country}</p>
+                            </div>
+                             <div>
+                                <p className='text-gray-500'>Audiance Age</p>
+                                <p className='font-medium'>{listing.age_range}</p>
+                            </div>
+
+                             <div>
+                                <p className='text-gray-500'>Platform varified</p>
+                                <p className='font-medium'>{listing.platformAssured ? "Yes" : "NO"}</p>
+                            </div>
+                            <div>
+                                <p className='text-gray-500'>Monetization</p>
+                                <p className='font-medium'>{listing.monitized ? "Enable" : "Disabled"}</p>
+                            </div>
+                              <div>
+                                <p className='text-gray-500'>Status</p>
+                                <p className='font-medium capitalize'>{listing.status}</p>
+                            </div>
+                        </div>
+                   </div>
 
                 </div>
 
                  {/*seller Info and details */}
-                 <div className=''>
+                 <div className='bg-white min-w-full md:min-w-[370px] rounded-xl border border-gray-200 p-5 max-md:mb-10 hover:border-indigo-400'>
+                     <h4 className='font-semibold text-gray-800 mb-4'>
+                        Seller Information
+                     </h4>
+                     <div className='flex items-center gap-3 mb-2'>
+                       <img className='size-10 rounded-full' src={listing.owner?.image} alt="seller image" />
+                       <div>
+                        <p className='font-medium text-gray-800'>{listing.owner?.name}</p>
+                        <p className='text-sm text-gray-500'>{listing.owner?.email}</p>
+                       </div>  
+                     </div>
 
+                     <div className='flex items-center justify-between text-sm text-gray-600 mb-4'>
+                    <p>Member Since <span className='font-medium'>{new Date(listing.owner?.createdAt).toLocaleDateString()}</span></p>
                  </div>
+                   
+                 <button onClick={loadChatbox} className='w-full bg-indigo-600 text-white py-2 rounded-lg 
+                 hover:bg-indigo-700 transition text-sm font-medium flex items-center
+                 justify-center gap-2'>
+                     <MessageSquareIcon className='size-4'/> Chat
+                </button>
+
+                {
+                    listing.isCredentialChanged && (
+                        <button onClick={purchaseAccount} className='w-full mt-2 bg-purple-600 text-white py-2 rounded-lg 
+                 hover:bg-purple-700 transition text-sm font-medium flex items-center
+                 justify-center gap-2'>
+                     <ShoppingBag className='size-4'/> Puchase
+                </button>
+                    )
+                }
+                     
+                 </div>
+                 
              </div>
+          {/*Footer */}   
+          <div className='bg-white border-t border-gray-200 p-4 text-center mt-28'>
+            <p className='text-sm text-gray-500'>© 2025 <span className='text-indigo-600'>SocialMart</span>. All rights reserved</p>
+          </div>
         </div>
     ):
     (
