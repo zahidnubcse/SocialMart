@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { dummyChats } from '../assets/assets';
-import { Loader2Icon, X } from 'lucide-react';
+import { CloudSnow, Loader2Icon, X } from 'lucide-react';
 import { clearChat } from '../app/features/chatSlice';
+import {format} from 'date-fns'
 
 
 const ChatBox = () => {
@@ -11,6 +12,7 @@ const {listing, isOpen, chatId} = useSelector((state)=>state.chat)
 const dispatch = useDispatch()
 
 const user = {id: 'user_2'}
+
 
 const [chat, setChat] = useState(null);
 const [messages, setMessages] = useState([]);
@@ -39,6 +41,13 @@ useEffect (()=>{
       setIsSending(false)
    }
 },[isOpen])
+
+{/*for auto scroll */}
+const messagesEndRef = useDispatch(null);
+useEffect(()=>{
+   messagesEndRef.current?.scrollIntoView({behavior: "smooth"})
+},[messages.length])
+
 
 if (!isOpen || !listing) return null
     return (
@@ -87,13 +96,33 @@ if (!isOpen || !listing) return null
 
                             <div className={`max-w-[70%] rounded-lg p-3 pb-1 ${message.sender_id === user.id ? "bg-indigo-600 text-white" : "bg-white border border-gray-200 text-gray-800"}`}>
                                 <p className='text-sm wrap-break-word whitespace-pre-wrap'>{message.message}</p>
-                                <p className={`text-[10px] mt-1 ${message.sender_id === user.id ? "text-indigo-200" : "text-gray-400"}`}>{new Date(message.createdAt).toLocaleDateString()}</p>
+                                <p className={`text-[10px] mt-1 ${message.sender_id === user.id ? "text-indigo-200" : "text-gray-400"}`}>
+                                    
+                                    {format(new Date(message.createdAt), "MMM dd 'at' h:mm a ")}</p>
                             </div>
-
+                        
                         </div>
                     ))
                    )}
+                   <div ref={messagesEndRef}/>
                </div> 
+               {/*Input Area */}
+               {chat?.listing?.status === "active" ? 
+               (
+                <form className='p-4 bg-white border-t border-gray-200 rounded-b-lg'>
+                    <div className='flex items-end space-x-2'>
+                        <textarea placeholder='Type your message..' className='flex-1 resize-none border border-gray-300
+                        rounded-lg px-4 py-2 focus:outline-indigo-500 max-h-32' rows={1}/>
+                    </div>
+                </form>
+               )
+               :
+               (
+                <div className='p-4 bg-white border-t border-gray-200 rounded-b-lg'>
+                    <p>{chat ? `Listing is ${chat?.listing?.status}` : "Loading chat.."}</p>
+                </div>
+               )
+               }
             </div>
         </div>
     );
