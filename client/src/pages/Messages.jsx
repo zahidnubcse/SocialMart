@@ -1,13 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { dummyChats } from '../assets/assets';
 import { MessageCircle, Search, Calendar } from 'lucide-react';
+import {format, isToday, isYesterday, parseISO} from 'date-fns'
+import { useDispatch } from 'react-redux';
+import { setChat } from '../app/features/chatSlice';
 
 const Messages = () => {
 
+    const dispatch = useDispatch()
     const user = {id: "user_1"}
     const [chats, setChats] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [loading, setLoading] = useState(true);
+
+    const formatTime = (dateString)=> {
+        if(!dateString) return;
+        const date = parseISO(dateString)
+
+        if(isToday(date)){
+            return 'Today' +format(date, 'HH:mm');
+        }
+
+        
+        if(isYesterday(date)){
+            return 'Yesterday' +format(date, 'HH:mm');
+        }
+
+        return format(date, 'MMM d');
+    }
+
+
+    const filtersChats = useMemo(()=>{
+       const query = searchQuery.toLocaleLowerCase();
+       return chats.filter((chat)=>{
+        const chatUser = chat.chatUserId === user?.id ? chat?.ownerUser : chat?.chatUser;
+
+        return chat.listing?.title?.toLocaleLowerCase().includes(query) || chatUser?.name?.toLocaleLowerCase().includes(query);
+       })
+    },[chats, searchQuery])
+
+    const handleOpenChat = (chat)=>{
+          dispatch(setChat({listing: chat.listing, chatId: chat.id}))
+    }
 
     const fetchUserChats = async ()=>{
         setChats(dummyChats)
@@ -41,7 +75,7 @@ const Messages = () => {
                     {loading ? (
                         <div className='text-center text-gray-500 py-20'>Loading messages...</div>
                     ):
-                    chats.length === 0 ?(
+                     filtersChats.length === 0 ?(
                         <div className='bg-white rounded-lg shadow-xs border border-gray-200 p-16 text-center'>
                              <div className='w-16 h-16 bg-gray-100 rounded-full flex items-center
                              justify-center mx-auto mb-4'>
@@ -55,10 +89,10 @@ const Messages = () => {
                     ):
                     (
                         <div className='bg-white rounded-lg shadow-xs border border-gray-200 divide-y divide-gray-200'>
-                             {chats.map((chat)=>{
+                             {filtersChats.map((chat)=>{
                                 const chatUser = chat.chatUserId === user?.id ? chat.ownerUser : chat.chatUser;
                                 return(
-                                    <button key={chat.id} className='w-full p-4 hover:bg-gray-50
+                                    <button onClick={()=>handleOpenChat(chat)} key={chat.id} className='w-full p-4 hover:bg-gray-50
                                     transition-colors text-left'> 
                                       <div className='flex items-start space-x-4'>
                                           <div className='flex-shrink-0'>
@@ -70,7 +104,7 @@ const Messages = () => {
                                                 <h3 className='font-semibold text-gray-800 truncate'>
                                                   {chat.listing?.title}
                                                 </h3>
-                                                <span className='text-xs text-gray-500 flex-shrink-0 ml-2'>{chat.updatedAt}</span>
+                                                <span className='text-xs text-gray-500 flex-shrink-0 ml-2'>{formatTime(chat.updatedAt)}</span>
                                                </div>
                                                <p className='text-sm text-gray-600 truncate mb-1'>{chatUser?.name}</p>
                                                <p className={`text-sm truncate ${!chat.isLastMessageRead && chat.lastMessageSenderId !== user?.id ? 'text-indigo-600 font-medium' : "text-gray-500"}`}>{chat.lastMessage || 'No messages yet'}</p>
