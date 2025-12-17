@@ -264,7 +264,7 @@ const ListingDetails = () => {
              </div>
           {/*Footer */}   
           <div className='bg-white border-t border-gray-200 p-4 text-center mt-28'>
-            <p className='text-sm text-gray-500'>© 2025 <span className='text-indigo-600'>SocialMart</span>. All rights reserved</p>
+            <p className='text-sm text-gray-500'>© 2025 <span onClick={()=>{navigate('/'), scrollTo(0, 0)}} className='cursor-pointer text-indigo-600'>SocialMart</span>. All rights reserved</p>
           </div>
         </div>
     ):
