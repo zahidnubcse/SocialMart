@@ -10,6 +10,7 @@ import MyListings from './pages/MyListings';
 import MyOrders from './pages/MyOrders';
 import Navbar from './components/Navbar';
 import ChatBox from './components/ChatBox';
+import {Toaster} from 'react-hot-toast'
 //import Footer from './components/Footer';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
 
   return (
     <div>
+      <Toaster/>
       {!pathname.includes('/admin') && <Navbar/>}
        
       
