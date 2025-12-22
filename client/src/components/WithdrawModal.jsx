@@ -18,8 +18,8 @@ const WithdrawModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center sm:p-4">
-      <div className="bg-white w-full max-w-lg h-screen sm:h-auto sm:rounded-lg shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-2 sm:p-4">
+      <div className="bg-white w-full max-w-lg sm:rounded-lg shadow-2xl flex flex-col max-h-[95vh]">
 
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-indigo-400 text-white p-4 sm:rounded-t-lg flex items-center justify-between">
@@ -35,10 +35,10 @@ const WithdrawModal = ({ onClose }) => {
         {/* Form */}
         <form
           onSubmit={handleSubmission}
-          className="p-4 flex flex-col gap-4 max-h-[75vh] overflow-y-auto"
+          className="p-4 flex flex-col gap-4 overflow-y-auto"
         >
           {/* Amount */}
-          <div className="grid grid-cols-[2fr_3fr] items-center gap-3">
+          <div className="flex flex-col sm:grid sm:grid-cols-[2fr_3fr] gap-2 sm:items-center sm:gap-3">
             <label className="text-sm font-medium text-gray-800">
               Amount
             </label>
@@ -56,7 +56,7 @@ const WithdrawModal = ({ onClose }) => {
           {account.map((field, index) => (
             <div
               key={index}
-              className="grid grid-cols-[2fr_3fr] items-center gap-3"
+              className="flex flex-col sm:grid sm:grid-cols-[2fr_3fr] gap-2 sm:items-center sm:gap-3"
             >
               <label className="text-sm font-medium text-gray-800">
                 {field.name}
@@ -81,7 +81,7 @@ const WithdrawModal = ({ onClose }) => {
           {/* Submit */}
           <button
             type="submit"
-            className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-md font-medium transition"
+            className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md font-medium transition"
           >
             Apply for Withdrawal
           </button>
