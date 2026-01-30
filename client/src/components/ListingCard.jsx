@@ -52,13 +52,14 @@ const ListingCard = ({listing}) => {
                 <div className='flex items-center gap-3 mb-3'>
                     <span className='text-xs font-medium bg-pink-100 text-pink-600 px-3 py-1 rounded-full capitalize'>
                         {listing.niche}
-                        {listing.country && (
+                       
+                    </span>
+                     {listing.country && (
                             <div className='flex items-center text-gray-500 text-sm'>
                                 <MapPin className='size-6 mr-1 text-gray-400'/>
                                 {listing.country}
                             </div>
                         )}
-                    </span>
                 </div>
                 {/* description */}
                 <div>
