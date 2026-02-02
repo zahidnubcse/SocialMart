@@ -1,14 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { dummyChats } from '../assets/assets';
+//import { dummyChats } from '../assets/assets';
 import { MessageCircle, Search, Calendar } from 'lucide-react';
 import {format, isToday, isYesterday, parseISO} from 'date-fns'
 import { useDispatch } from 'react-redux';
 import { setChat } from '../app/features/chatSlice';
+import { useAuth, useUser } from '@clerk/clerk-react';
+import api from '../configs/axios';
+import toast from 'react-hot-toast';
 
 const Messages = () => {
 
     const dispatch = useDispatch()
-    const user = {id: "user_1"}
+    const {getToken} = useAuth()
+    const {user,isLoaded} = useUser()
     const [chats, setChats] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [loading, setLoading] = useState(true);
@@ -37,24 +41,36 @@ const Messages = () => {
 
         return chat.listing?.title?.toLocaleLowerCase().includes(query) || chatUser?.name?.toLocaleLowerCase().includes(query);
        })
-    },[chats, searchQuery])
+    },[chats, searchQuery, user])
 
     const handleOpenChat = (chat)=>{
           dispatch(setChat({listing: chat.listing, chatId: chat.id}))
     }
 
     const fetchUserChats = async ()=>{
-        setChats(dummyChats)
-        setLoading(false)
+        try {
+const token = await getToken();
+const { data } = await api.get("/api/chat/user", {headers: { Authorization:
+`Bearer ${token}` }})
+setChats (data.chats)
+setLoading(false)
+} catch (error) {
+toast.error(error?.response?.data?.message || error.message);
+console.log(error);
+setLoading(false);
+}
     }
 
     useEffect(()=>{
-            fetchUserChats()
+        if (user && isLoaded) {
+             fetchUserChats()
             const interval = setInterval(()=>{
                 fetchUserChats();
             }, 10* 1000);
             return ()=> clearInterval(interval)
-    },[])
+        }
+           
+    },[user, isLoaded])
     return (
         <div className='mx-auto min-h-screen md:px-16 lg:px-24 xl:px-32'>
             <div className='py-10'>

@@ -4,8 +4,11 @@ import { getProfileLink, platformIcons } from '../assets/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft, ArrowUpRightFromSquare, Calendar, CheckCircle2, ChevronLeftIcon, ChevronRightIcon, DollarSign, EyeIcon, LineChart, Loader2Icon, MapPin, MessageSquareIcon, ShoppingBag, Users } from 'lucide-react';
 import { setChat } from '../app/features/chatSlice';
+import { useUser } from '@clerk/clerk-react';
+import toast from 'react-hot-toast';
 
 const ListingDetails = () => {
+    const {user, isLoaded} = useUser()
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const currency = import.meta.env.VITE_CURRENCY || '$';
@@ -33,6 +36,8 @@ const ListingDetails = () => {
     }
 
     const loadChatbox =()=>{
+        if (!isLoaded || !user) return toast("Please login to chat with seller")
+            if(user.id === listing.ownerId) return ("Please login to chat with seller")
         dispatch(setChat({listing: listing}))
     }
 
