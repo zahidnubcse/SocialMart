@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from '@clerk/clerk-react';
 import { useDispatch } from 'react-redux';
-import { getAllUserListing } from './../../../server/controllers/listingController';
+import { getAllUserListing } from '../app/features/listingSlice';
 import api from './../configs/axios';
 
 

@@ -4,7 +4,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import api from "../configs/axios";
-import { getAllUserListing } from "../../../server/controllers/listingController";
+import { getAllUserListing } from "../app/features/listingSlice";
 
 const WithdrawModal = ({ onClose }) => {
 

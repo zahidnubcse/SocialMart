@@ -26,8 +26,7 @@ import { platformIcons } from "../assets/assets";
 import CredentialSubmission from "../components/CredentialSubmission";
 import WithdrawModal from "../components/WithdrawModal";
 import { useAuth } from "@clerk/clerk-react";
-import { getAllUserListing } from "./../../../server/controllers/listingController";
-import { getAllPublicListing } from "./../app/features/listingSlice";
+import { getAllUserListing, getAllPublicListing } from "../app/features/listingSlice";
 import toast from "react-hot-toast";
 import api from "../configs/axios";
 
